@@ -6,6 +6,7 @@ const WhiteboardInfoBackendService = require("./services/WhiteboardInfoBackendSe
 
 function startBackendServer(port) {
     var fs = require("fs-extra");
+    var cors = require("cors");
     var express = require("express");
     var formidable = require("formidable"); //form upload processing
 
@@ -19,10 +20,19 @@ function startBackendServer(port) {
     var s_whiteboard = require("./s_whiteboard.js");
 
     var app = express();
+    app.use(cors());
 
     var server = require("http").Server(app);
     server.listen(port);
-    var io = require("socket.io")(server, { path: "/ws-api" });
+    var io = require("socket.io")(server, {
+        path: "/ws-api",
+        cors: {
+            origin: "http://localhost:9999",
+            methods: ["GET", "POST"],
+            allowedHeaders: ["my-custom-header"],
+        },
+    });
+
     WhiteboardInfoBackendService.start(io);
 
     console.log("Webserver & socketserver running on port:" + port);

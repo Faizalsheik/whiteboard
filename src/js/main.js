@@ -48,7 +48,14 @@ const subdir = getSubDir();
 let signaling_socket;
 
 function main() {
-    signaling_socket = io("", { path: subdir + "/ws-api" }); // Connect even if we are in a subdir behind a reverse proxy
+    signaling_socket = io("http://localhost:8080", {
+        path: "/ws-api",
+        extraHeaders: {
+            "my-custom-header": "abcd",
+        },
+    }); // Connect even if we are in a subdir behind a reverse proxy
+    console.log(signaling_socket);
+    console.log("KUR KAPAN");
 
     signaling_socket.on("connect", function () {
         console.log("Websocket connected!");
@@ -155,7 +162,7 @@ function initWhiteboard() {
             //Load the whiteboard
             whiteboardId: whiteboardId,
             username: btoa(encodeURIComponent(myUsername)),
-            backgroundGridUrl: "./images/" + ConfigService.backgroundGridImage,
+            backgroundGridUrl: "/images/" + ConfigService.backgroundGridImage,
             sendFunction: function (content) {
                 if (ReadOnlyService.readOnlyActive) return;
                 //ADD IN LATER THROUGH CONFIG
@@ -169,21 +176,22 @@ function initWhiteboard() {
         });
 
         // request whiteboard from server
-        $.get(subdir + "/api/loadwhiteboard", { wid: whiteboardId, at: accessToken }).done(
-            function (data) {
-                console.log(data);
-                whiteboard.loadData(data);
-                if (copyfromwid && data.length == 0) {
-                    //Copy from witheboard if current is empty and get parameter is given
-                    $.get(subdir + "/api/loadwhiteboard", {
-                        wid: copyfromwid,
-                        at: accessToken,
-                    }).done(function (data) {
-                        whiteboard.loadData(data);
-                    });
-                }
+        $.get("http://localhost:8080/api/loadwhiteboard", {
+            wid: whiteboardId,
+            at: accessToken,
+        }).done(function (data) {
+            console.log(data);
+            whiteboard.loadData(data);
+            if (copyfromwid && data.length == 0) {
+                //Copy from witheboard if current is empty and get parameter is given
+                $.get(subdir + "/api/loadwhiteboard", {
+                    wid: copyfromwid,
+                    at: accessToken,
+                }).done(function (data) {
+                    whiteboard.loadData(data);
+                });
             }
-        );
+        });
 
         $(window).resize(function () {
             signaling_socket.emit("updateScreenResolution", {
@@ -818,7 +826,7 @@ function initWhiteboard() {
         const date = +new Date();
         $.ajax({
             type: "POST",
-            url: document.URL.substr(0, document.URL.lastIndexOf("/")) + "/api/upload",
+            url: "http://localhost:8080/api/upload",
             data: {
                 imagedata: base64data,
                 whiteboardId: whiteboardId,
@@ -830,7 +838,7 @@ function initWhiteboard() {
                 const filename = `${correspondingReadOnlyWid}_${date}.png`;
                 const rootUrl = document.URL.substr(0, document.URL.lastIndexOf("/"));
                 whiteboard.addImgToCanvasByUrl(
-                    `${rootUrl}/uploads/${correspondingReadOnlyWid}/${filename}`
+                    `http://localhost:8080/uploads/${correspondingReadOnlyWid}/${filename}`
                 ); //Add image to canvas
                 console.log("Image uploaded!");
             },

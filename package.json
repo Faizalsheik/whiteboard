@@ -6,7 +6,7 @@
   "directories": {},
   "scripts": {
     "build": "webpack --config config/webpack.build.js",
-    "start:dev": "apidoc -i scripts/ -o ./public/apidoc/ && node scripts/server.js --mode=development",
+    "start:dev": "apidoc -i scripts/ -o ./public/apidoc/ && node scripts/server.js --mode=development --config=./config.run.yml",
     "start:prod": "npm run build && npm run start",
     "start": "apidoc -i scripts/ -o ./dist/apidoc/ && node scripts/server.js --mode=production",
     "test": "jest",
@@ -72,7 +72,7 @@
     "vanilla-picker": "^2.10.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^1.16.5",
     "webpack-merge": "^4.2.2"
   },
   "author": "Cracker0dks",

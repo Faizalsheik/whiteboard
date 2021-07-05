@@ -12,8 +12,21 @@ body {
         Arial, sans-serif;
 }
 
+#main_grid {
+    height: 100vh;
+    width: 100vw;
+
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
 #whiteboardContainer {
-    height: calc(var(--vh, 1vh) * 100);
+    position: relative;
+    top: 70px;
+    left: 15px;
+    border: 1px solid black;
+    height: 100%;
     width: 100%;
 }
 

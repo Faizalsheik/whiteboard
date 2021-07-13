@@ -27,7 +27,6 @@ function startBackendServer(port) {
     var io = require("socket.io")(server, {
         path: "/ws-api",
         cors: {
-            origin: "http://localhost:9999",
             methods: ["GET", "POST"],
             allowedHeaders: ["my-custom-header"],
         },

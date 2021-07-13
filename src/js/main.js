@@ -59,7 +59,7 @@ const subdir = getSubDir();
 let signaling_socket;
 
 function main() {
-    signaling_socket = io("http://localhost:8080", {
+    signaling_socket = io(`${ENV_WHITEBOARD_HOST}`, {
         path: "/ws-api",
         extraHeaders: {
             "my-custom-header": "abcd",
@@ -186,7 +186,7 @@ function initWhiteboard() {
         });
 
         // request whiteboard from server
-        $.get("http://localhost:8080/api/loadwhiteboard", {
+        $.get(`${ENV_WHITEBOARD_HOST}/api/loadwhiteboard`, {
             wid: whiteboardId,
             at: accessToken,
         }).done(function (data) {
@@ -836,7 +836,7 @@ function initWhiteboard() {
         const date = +new Date();
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/api/upload",
+            url: `${ENV_WHITEBOARD_HOST}/api/upload`,
             data: {
                 imagedata: base64data,
                 whiteboardId: whiteboardId,
@@ -848,7 +848,7 @@ function initWhiteboard() {
                 const filename = `${correspondingReadOnlyWid}_${date}.png`;
                 const rootUrl = document.URL.substr(0, document.URL.lastIndexOf("/"));
                 whiteboard.addImgToCanvasByUrl(
-                    `http://localhost:8080/uploads/${correspondingReadOnlyWid}/${filename}`
+                    `${ENV_WHITEBOARD_HOST}/uploads/${correspondingReadOnlyWid}/${filename}`
                 ); //Add image to canvas
                 console.log("Image uploaded!");
             },

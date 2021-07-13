@@ -14,9 +14,20 @@ import { v4 as uuidv4 } from "uuid";
 const pdfjsLib = require("pdfjs-dist");
 
 const urlParams = new URLSearchParams(window.location.search);
-let whiteboardId = urlParams.get("whiteboardid");
-const randomid = urlParams.get("randomid");
+let whiteboardId = ROOM_ID;
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
+console.log(ROOM_ID);
 
+/*
 if (randomid) {
     whiteboardId = uuidv4();
     urlParams.delete("randomid");
@@ -26,15 +37,15 @@ if (randomid) {
 if (!whiteboardId) {
     whiteboardId = "myNewWhiteboard";
 }
+*/
 
-whiteboardId = unescape(encodeURIComponent(whiteboardId)).replace(/[^a-zA-Z0-9\-]/g, "");
+//whiteboardId = unescape(encodeURIComponent(whiteboardId)).replace(/[^a-zA-Z0-9\-]/g, "");
 
 if (urlParams.get("whiteboardid") !== whiteboardId) {
     urlParams.set("whiteboardid", whiteboardId);
-    window.location.search = urlParams;
 }
 
-const myUsername = urlParams.get("username") || "unknown" + (Math.random() + "").substring(2, 6);
+const myUsername = USERNAME;
 const accessToken = urlParams.get("accesstoken") || "";
 const copyfromwid = urlParams.get("copyfromwid") || "";
 
@@ -55,7 +66,6 @@ function main() {
         },
     }); // Connect even if we are in a subdir behind a reverse proxy
     console.log(signaling_socket);
-    console.log("KUR KAPAN");
 
     signaling_socket.on("connect", function () {
         console.log("Websocket connected!");
